@@ -1,0 +1,8 @@
+There are 333 sequences.
+Total length is 32176
+Minimum length of sequences is 56.
+Mamimum length of sequences is 102.
+Average length of sequences is 97.
+The length of largest 10 sequences is 811.
+The length of largest 100 sequences is 9248.
+N50 is 96.

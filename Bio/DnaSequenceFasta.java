@@ -63,14 +63,14 @@ public class DnaSequenceFasta extends SequenceFasta {
 	   }
 	   return true;
 	}
-	public DnaSequenceFasta ComplementReverse(){
+	public DnaSequenceFasta complementaryReverse(){
         int i, j, len, mid;
 		int left, right;
 		char [] array;
 		len = super.getLength();
 		array = super.getSequence().toCharArray();
-		System.out.println(super.getSequence());
-		System.out.println(len);
+		//System.out.println(super.getSequence());
+		//System.out.println(len);
 		mid = (len / 2) + (len % 2);
 		for(i = 0, j = len - 1; i < mid; i++, j--){
            left = array[i];
@@ -78,7 +78,7 @@ public class DnaSequenceFasta extends SequenceFasta {
            array[i] = complement[right - 'A']; 
            array[j] = complement[left - 'A']; 
 		}
-		return new DnaSequenceFasta(new String(array), super.getDescription());
+		return new DnaSequenceFasta(super.getDescription(), new String(array));
 	}
 	//for testing purpose
 	public static void main(String [] args){
@@ -86,6 +86,6 @@ public class DnaSequenceFasta extends SequenceFasta {
            System.out.print(fasta.formatCheck());
 		   DnaSequenceFasta fasta2 = new DnaSequenceFasta(">seq2", "GGGCCCAATTN");
            System.out.print(fasta2);
-           System.out.print(fasta2.ComplementReverse());
+           System.out.print(fasta2.complementaryReverse());
 	}
 }

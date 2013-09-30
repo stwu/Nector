@@ -47,6 +47,7 @@ public class SequenceFasta implements Comparable<SequenceFasta> {
 	}*/
 	@Override
 	public int compareTo(SequenceFasta other){
+	   //return Integer.valueOf(sequence.length()).compareTo(Integer.valueOf(other.getSequence().length()));
        return sequence.length() - other.sequence.length();
 	}
 	@Override
