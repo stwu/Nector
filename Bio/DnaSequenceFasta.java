@@ -1,7 +1,39 @@
-package Bio;
+/* The MIT License
 
+Copyright (c) 2013, by Sitao Wu <wusitao2000@gmail.com>
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
+package Bio;
 import java.io.*;
 import java.util.*;
+
+/**
+ * An object of <code>DnaSequenceFasta</code> is a 
+ * dna sequence file in FASTA format
+ * @author Sitao Wu
+ * @version 0.1
+ * @since  2013
+ */
 public class DnaSequenceFasta extends SequenceFasta {
 	private static char [] complement = { 'T', 'B', 'G', 'D', 'E', 'F', 'C',
 	                               'H', 'I', 'J', 'K', 'L', 'M', 'N',
@@ -10,15 +42,34 @@ public class DnaSequenceFasta extends SequenceFasta {
     private static char[] capital = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J','K', 'L', 'M', 'N',
                        'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 
+    /**
+     * DnaSequenceFasta constructor
+	 */
     public DnaSequenceFasta(){
         super();
 	}
+
+    /**
+     * DnaSequenceFasta constructor
+	 * @param description for a desciption line
+	 * @param sequence for a sequence line 
+	 */
     public DnaSequenceFasta(String description, String sequence){
         super(description, sequence);
 	}
+
+    /**
+     * DnaSequenceFasta constructor
+	 * @param fasta for a DnaSequenceFasta object
+	 */
     public DnaSequenceFasta(DnaSequenceFasta fasta){
         super(fasta); 
 	}
+
+    /**
+     * Check if the sequence is a DNA sequence
+	 * @return true if the sequence is a DNA sequence; false otherwise
+	 */
 	public boolean sequenceCheck(){
 	   char [] seq = super.getSequence().toCharArray();
 	   int [] count = new int[26];
@@ -43,6 +94,11 @@ public class DnaSequenceFasta extends SequenceFasta {
           return false;
 	   }
 	}
+ 
+    /**
+     * Check if the description begins with a ">" symbol
+	 * @return true if the description begins with a ">" symbol; false otherwise
+	 */
 	public boolean descriptionCheck(){
        if(!super.getDescription().substring(0,1).equals(">")){
 		    System.err.println("Error! Description should begin with \">\" in FASTA format!");
@@ -52,6 +108,10 @@ public class DnaSequenceFasta extends SequenceFasta {
             return true;
 	   }
 	}
+    /**
+     * Check if the DnaSequenceFasta is a FASTA format using sequenceCheck() and descriptionCheck() 
+	 * @return true if the DnaSequenceFasta is a FASTA format; false otherwise
+	 */
 	public boolean formatCheck(){
 	   //check quality area
        if(!descriptionCheck()){
@@ -63,14 +123,16 @@ public class DnaSequenceFasta extends SequenceFasta {
 	   }
 	   return true;
 	}
+    /**
+     * Make a complementary reverse sequence from the original DnaSequenceFasta object 
+	 * @return a complementary reverse sequence in FASTA format
+	 */
 	public DnaSequenceFasta complementaryReverse(){
         int i, j, len, mid;
 		int left, right;
 		char [] array;
 		len = super.getLength();
 		array = super.getSequence().toCharArray();
-		//System.out.println(super.getSequence());
-		//System.out.println(len);
 		mid = (len / 2) + (len % 2);
 		for(i = 0, j = len - 1; i < mid; i++, j--){
            left = array[i];
@@ -79,13 +141,5 @@ public class DnaSequenceFasta extends SequenceFasta {
            array[j] = complement[left - 'A']; 
 		}
 		return new DnaSequenceFasta(super.getDescription(), new String(array));
-	}
-	//for testing purpose
-	public static void main(String [] args){
-           DnaSequenceFasta fasta = new DnaSequenceFasta(">seq1", "aaaaCCCCGGGGGTTTTTNa");
-           System.out.print(fasta.formatCheck());
-		   DnaSequenceFasta fasta2 = new DnaSequenceFasta(">seq2", "GGGCCCAATTN");
-           System.out.print(fasta2);
-           System.out.print(fasta2.complementaryReverse());
 	}
 }

@@ -1,22 +1,60 @@
 package Bio;
 import java.io.*;
 import java.util.*;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Collections;
 import java.util.List;
 
 public class SequenceListFasta{
-     private ArrayList<SequenceFasta> sequenceList;
-	 private int CAPACITY = 400;
+     private LinkedList<SequenceFasta> sequenceList;
+	 public final static int CAPACITY = 400;
 
      public SequenceListFasta(){
-        sequenceList = new ArrayList<SequenceFasta>();
+        sequenceList = new LinkedList<SequenceFasta>();
 	 }
 	 public SequenceListFasta(String fileName){
 		this();
-		getFromFileFasta(fileName); 
+		getFromFile(fileName); 
 	 }
-	 public void getFromFileFasta(String fileName){
+	 public LinkedList<SequenceFasta> getList(){
+        return sequenceList;
+	 }
+     public void excluding(String listFile, boolean flag){
+        HashSet<String> set = new HashSet<String>(); 
+		String firstDesc = null;
+		String line = null;
+		int len;
+		try{
+	      Scanner in = new Scanner(new BufferedReader(new FileReader(listFile)));
+	      while(in.hasNextLine()){
+		     line = in.nextLine();
+			 set.add(line);
+          }
+		  in.close();
+		  ListIterator<SequenceFasta> it = sequenceList.listIterator();
+		  SequenceFasta fasta = null;
+		  while(it.hasNext()){
+              fasta = it.next();
+			  firstDesc = fasta.getDescription().split("\\s+")[0];
+              len = firstDesc.length();
+			  firstDesc = firstDesc.substring(1, len);
+			  if(flag){
+                 if(set.contains(firstDesc)) it.remove();
+			  }
+			  else{
+                 if(!set.contains(firstDesc)) it.remove();
+			  }
+		  }
+		}
+		catch(IOException e){
+		  e.printStackTrace();
+		}
+		catch(Exception e){
+		  e.printStackTrace();
+		}
+
+	 }
+	 public void getFromFile(String fileName){
 		String line, desc = null;
 		DnaSequenceFasta fasta = null;
 		int i = 0;
@@ -55,8 +93,6 @@ public class SequenceListFasta{
 		   PrintWriter out = new PrintWriter(outputFileName);
            for(SequenceFasta fasta: sequenceList){
                DnaSequenceFasta fastaDna = (DnaSequenceFasta) fasta;
-			   //int len = fastaDna.getLength();
-			   //System.out.printf("len=%d\n", len);
 			   out.print(fastaDna);
 
 		   }
@@ -72,12 +108,10 @@ public class SequenceListFasta{
 		 int avgLen = 0;
 		 int len = 0, sum = 0;
 		 int size = sequenceList.size();
-		 ArrayList<Integer> intList = new ArrayList<Integer>();
-		  
+		 LinkedList<Integer> intList = new LinkedList<Integer>();
 		 for(SequenceFasta fasta: sequenceList){
             DnaSequenceFasta fastaDna = (DnaSequenceFasta) fasta;
 		    len = fastaDna.getLength();
-			//System.out.println(len);
 			intList.add(Integer.valueOf(len));
             if(len < minLen) minLen = len;
 			if(len > maxLen) maxLen = len;
@@ -89,7 +123,6 @@ public class SequenceListFasta{
 		 int cutoff = (int) (sum * .5);
 		 boolean flag = false;
 		 for(Integer length: intList){
-			//System.out.printf("len = %d\n", length);
             ++i;
 			if(i <= 10) sum10 += length;
 			if(i <=100) sum100 += length;
@@ -136,9 +169,6 @@ public class SequenceListFasta{
               fasta = it.next();
 			  it.set((SequenceFasta) ((DnaSequenceFasta) fasta).complementaryReverse());
 		 }
-         //for(SequenceFasta fasta: sequenceList){
-	     //     fasta = (SequenceFasta) ((DnaSequenceFasta) fasta).complementaryReverse(); 
-		 //}
 	 }
 	 public void filterSequence(int minLen){
 		 ListIterator<SequenceFasta> it = sequenceList.listIterator();
@@ -148,13 +178,15 @@ public class SequenceListFasta{
               if(fasta.getLength() < minLen) it.remove();
 		 }
 	 }
-	 //For testing only
-	 public static void main(String [] args){
-		   //SequenceList list = new SequenceList(); 
-           //list.getFromFileFasta("test.fasta");
-		   //list.sortSequenceByLen();
-		   //list.reverseSequence();
-           //list.printAllSequences();
-		   //list.printSequenceStatistics();
+	 public boolean formatCheck(){
+		 ListIterator<SequenceFasta> it = sequenceList.listIterator();
+		 SequenceFasta fasta = null;
+		 while(it.hasNext()){
+              fasta = it.next();
+			  if(!(((DnaSequenceFasta)fasta).formatCheck())){
+                 return false;
+			  }
+		 }
+		 return true;
 	 }
 }
