@@ -37,7 +37,7 @@ import java.util.*;
 public class SequenceFasta implements Comparable<SequenceFasta> {
 	private String description;//Desciption of sequences, treat it like ID, don't include ">"
     private String sequence;//Sequence like ACGT
-
+    
     /**
      * SequenceFasta constructor
 	 */
@@ -53,6 +53,7 @@ public class SequenceFasta implements Comparable<SequenceFasta> {
     public SequenceFasta(SequenceFasta fasta){
        setFasta(fasta);
 	}
+    
 	/**
 	 * SequenceFasta constructor
 	 * @param description for a description line
@@ -128,6 +129,6 @@ public class SequenceFasta implements Comparable<SequenceFasta> {
 	 */
 	@Override
 	public String toString(){
-       return description + "\n" + sequence + "\n";
+       return description + "\n" + SequenceUtils.format(sequence);
 	}
 }

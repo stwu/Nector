@@ -36,11 +36,13 @@ import java.util.*;
  */
 public class DnaSequenceFasta extends SequenceFasta {
 	private static char [] complement = { 'T', 'B', 'G', 'D', 'E', 'F', 'C',
-	                               'H', 'I', 'J', 'K', 'L', 'M', 'N',
-							       'O', 'P', 'Q',      'R', 'S', 'A',
-								   'A', 'V', 'W',      'X', 'Y', 'Z'};
-    private static char[] capital = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J','K', 'L', 'M', 'N',
-                       'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+	                                      'H', 'I', 'J', 'K', 'L', 'M', 'N',
+							              'O', 'P', 'Q',      'R', 'S', 'A',
+								          'A', 'V', 'W',      'X', 'Y', 'Z'};
+    private static char[] capital = { 'A', 'B', 'C', 'D', 'E', 'F', 'G',
+    	                              'H', 'I', 'J', 'K', 'L', 'M', 'N',
+                                      'O', 'P', 'Q',      'R', 'S', 'T', 
+                                      'U', 'V', 'W',      'X', 'Y', 'Z'};
 
     /**
      * DnaSequenceFasta constructor
@@ -71,7 +73,7 @@ public class DnaSequenceFasta extends SequenceFasta {
 	 * @return true if the sequence is a DNA sequence; false otherwise
 	 */
 	public boolean sequenceCheck(){
-	   char [] seq = super.getSequence().toCharArray();
+	   char [] seq = getSequence().toCharArray();
 	   int [] count = new int[26];
 	   int i, len;
 	   for(i = 0; i < 26; i++){
@@ -100,7 +102,7 @@ public class DnaSequenceFasta extends SequenceFasta {
 	 * @return true if the description begins with a ">" symbol; false otherwise
 	 */
 	public boolean descriptionCheck(){
-       if(!super.getDescription().substring(0,1).equals(">")){
+       if(!getDescription().substring(0,1).equals(">")){
 		    System.err.println("Error! Description should begin with \">\" in FASTA format!");
             return false;
 	   }
@@ -108,6 +110,7 @@ public class DnaSequenceFasta extends SequenceFasta {
             return true;
 	   }
 	}
+	
     /**
      * Check if the DnaSequenceFasta is a FASTA format using sequenceCheck() and descriptionCheck() 
 	 * @return true if the DnaSequenceFasta is a FASTA format; false otherwise
@@ -123,6 +126,7 @@ public class DnaSequenceFasta extends SequenceFasta {
 	   }
 	   return true;
 	}
+	
     /**
      * Make a complementary reverse sequence from the original DnaSequenceFasta object 
 	 * @return a complementary reverse sequence in FASTA format
@@ -131,8 +135,8 @@ public class DnaSequenceFasta extends SequenceFasta {
         int i, j, len, mid;
 		int left, right;
 		char [] array;
-		len = super.getLength();
-		array = super.getSequence().toCharArray();
+		len = getLength();
+		array = getSequence().toCharArray();
 		mid = (len / 2) + (len % 2);
 		for(i = 0, j = len - 1; i < mid; i++, j--){
            left = array[i];
@@ -140,6 +144,57 @@ public class DnaSequenceFasta extends SequenceFasta {
            array[i] = complement[right - 'A']; 
            array[j] = complement[left - 'A']; 
 		}
-		return new DnaSequenceFasta(super.getDescription(), new String(array));
+		return new DnaSequenceFasta(getDescription(), new String(array));
 	}
+	
+	/**
+	 * Use barcode to extract sequences
+     * @param barCode barcode sequence
+	 * @return extracted sequences. Null if barcode does not match
+	 */
+	 public DnaSequenceFasta barcode(String barCode){
+        int len = barCode.length();
+		String str = getSequence();
+		int len2 = str.length();
+		if(str.substring(0, len).equals(barCode)){
+           return new DnaSequenceFasta(getDescription(), str.substring(len, len2));      
+		}
+		else{
+           return null;
+		}
+	 }
+	 
+	/**
+	 * Assembly two overlapped pair-ended reads together into current read
+     * @param other the 3' end read data
+     * @param maxMismatch the maximum number of mismathes in overlapped region
+     * @param minOverlap the minimum length of overlapped region
+     * @return true if assembly is successful; fale otherwise
+	 */
+	 public boolean assembly(DnaSequenceFasta other, int maxMismatch, int minOverlap){
+        DnaSequenceFasta cr = other.complementaryReverse();
+		String [] str = SequenceUtils.doAssembly(getSequence(), cr.getSequence(), maxMismatch, minOverlap);
+		if(str != null){
+		   setDescription(getDescription() + " " + str[0]);
+		   setSequence(str[1]);
+		   return true;
+		}
+		else{
+           return false;
+		}
+	 }
+	 public static void main(String [] args){
+		 DnaSequenceFasta f1 = new DnaSequenceFasta(">1", "CCTACGGGAGGCAGCAGTGGGGAA");
+		 DnaSequenceFasta f2 = new DnaSequenceFasta(">1",  "CTACGGGAGGCAGCAGTGGGGAAT");
+	     DnaSequenceFasta f3 = f2.complementaryReverse();
+		 f1.assembly(f3, 3, 10);	
+		 System.out.print(f1);
+        /*String str1 = new String("CCTACGGGAGGCAGCAGTGGGGAA");
+		  String str2 = new String("TACGGGAGGCAGCAGTGGGGAA");
+		String [] str = doAssembly(str1, str2);
+		if(str != null){
+		  System.out.println(str[0]);
+		  System.out.println(str[1]);
+		}*/
+	 }
 }

@@ -54,6 +54,7 @@ public class DnaSequenceFastq extends DnaSequenceFasta{
 	  quality = null;
 	  platform = Platform.ILLUMINA_1_3; 
    }
+   
    /**
     * DnaSequenceFastq constructor
 	* @param fastq is an object of DnaSequenceFastq
@@ -61,6 +62,7 @@ public class DnaSequenceFastq extends DnaSequenceFasta{
    public DnaSequenceFastq(DnaSequenceFastq fastq){
       setFastq(fastq);
    }
+   
    /**
     * DnaSequenceFastq constructor
 	* @param description is a description line
@@ -87,6 +89,7 @@ public class DnaSequenceFastq extends DnaSequenceFasta{
 	  this.quality = quality;
       setPlatform(platformCheck());
    }
+   
    /**
      * Set the quality description line
 	 * @param qDescription is the quality description line
@@ -94,6 +97,7 @@ public class DnaSequenceFastq extends DnaSequenceFasta{
    public void setQdescription(String qDescription){
 	  this.qDescription = qDescription;
    }
+   
    /**
      * Set the quality score line
 	 * @param quality is the quality score line
@@ -101,6 +105,7 @@ public class DnaSequenceFastq extends DnaSequenceFasta{
    public void setQuality(String quality){
 	  this.quality = quality;
    }
+   
    /**
      * Set the platform
 	 * @param platform is the platform description
@@ -108,6 +113,7 @@ public class DnaSequenceFastq extends DnaSequenceFasta{
    public void setPlatform(Platform platform){
 	  this.platform = platform;
    }
+   
    /**
      * Get the quality description line 
 	 * @return the quality description line
@@ -115,6 +121,7 @@ public class DnaSequenceFastq extends DnaSequenceFasta{
    public String getQdescription(){
       return qDescription;
    }
+   
    /**
      * Get the quality score line 
 	 * @return the quality score line
@@ -122,6 +129,7 @@ public class DnaSequenceFastq extends DnaSequenceFasta{
    public String getQuality(){
       return quality;
    }
+   
    /**
      * Get the platform description 
 	 * @return the platform description
@@ -129,11 +137,12 @@ public class DnaSequenceFastq extends DnaSequenceFasta{
    public Platform getPlatform(){
       return platform;
    }
+   
    /**
      * Trim and filter the sequence according to quality score
-	 * @param cutoff the minimum quality score. Quality score=13 is corresponding to error rate= 5%. 
-	 * @param maxPer the maximum bases below cutoff
-	 * @param minLen the minimum len after trimming. If length after trimming < minLen, set length to zero.
+	 * @param cutoff the minimum quality score. Quality score=13 (default value) is corresponding to error rate= 5%. 
+	 * @param maxPer the maximum bases below cutoff. Default value = 0.05
+	 * @param minLen the minimum len after trimming. If length after trimming < minLen, set length to zero. Default value = 40
 	 */
    public void trim(int cutoff, float maxPer, int minLen){
        String str;
@@ -160,13 +169,14 @@ public class DnaSequenceFastq extends DnaSequenceFasta{
 		 }
 	   }
    }
+   
    /**
      * Check if the description begins with a "@" symbol
 	 * @return true if the description begins with a "@" symbol; false otherwise
 	 */
    @Override
    public boolean descriptionCheck(){
-       if(!super.getDescription().substring(0,1).equals("@")){
+       if(!getDescription().substring(0,1).equals("@")){
 		    System.err.println("Error! Sequence description should begin with \"@\" in FASTQ format!");
             return false;
 	   }
@@ -174,6 +184,7 @@ public class DnaSequenceFastq extends DnaSequenceFasta{
             return true;
 	   }
    }
+   
    /**
      * Check if the quality description begins with a "+" symbol
 	 * @return true if the description begins with a "+" symbol; false otherwise
@@ -187,6 +198,7 @@ public class DnaSequenceFastq extends DnaSequenceFasta{
             return true;
 	   }
    }
+   
    /**
      * Check the platform of the FASTQ file
 	 * @return the platform of the FASTQ file
@@ -215,12 +227,13 @@ public class DnaSequenceFastq extends DnaSequenceFasta{
 	  }
 	  return platform;
    }
+   
    /**
      * Check sequence and quality have the same length
 	 * @return true if sequence and quality have the same length; false otherwise
 	 */
    public boolean lengthCheck(){
-       if(super.getLength() != quality.length()){//sequence length is the same as that of quality scores
+       if(getLength() != quality.length()){//sequence length is the same as that of quality scores
 		  System.err.println("Error! The lengths of sequence and quality score are different!");
           return false;
 	   }
@@ -228,6 +241,7 @@ public class DnaSequenceFastq extends DnaSequenceFasta{
 		   return true;
 	   }
    }
+   
    /**
      * Check the FASTQ format using descriptionCheck(), sequenceCheck(), qdescriptionCheck(), platformCheck() and lengthCheck() 
 	 * @return true if FASTQ format is correct; false otherwise
@@ -236,7 +250,7 @@ public class DnaSequenceFastq extends DnaSequenceFasta{
        if(!descriptionCheck()){//description  check
           return false;
 	   }
-       if(!super.sequenceCheck()){//sequence  check
+       if(!sequenceCheck()){//sequence  check
           return false;
 	   }
        if(!qDescriptionCheck()){//Qdescription check
@@ -250,12 +264,13 @@ public class DnaSequenceFastq extends DnaSequenceFasta{
 	   }
        return true;
    }
+   
    /**
     * Set a DnaSequenceFastq object
     * @param fastq a DnaSequenceFastq object
     */
    public void setFastq(DnaSequenceFastq fastq){
-         super.setFasta(fastq.convertToFasta(fastq));
+         setFasta(fastq.convertToFasta(fastq));
 		 qDescription = fastq.getQdescription();
 		 quality = fastq.getQuality();
 		 platform = fastq.getPlatform();
@@ -267,7 +282,7 @@ public class DnaSequenceFastq extends DnaSequenceFasta{
 	 */
    @Override
    public String toString(){
-       return super.getDescription() + "\n" + super.getSequence() + "\n" + qDescription + "\n" + quality + "\n";
+       return getDescription() + "\n" + SequenceUtils.format(getSequence()) + qDescription + "\n" + SequenceUtils.format(quality);
    }
 
    /**
@@ -279,6 +294,7 @@ public class DnaSequenceFastq extends DnaSequenceFasta{
 	 tmpStr = ">" + tmpStr.substring(1, tmpStr.length());
 	 return new DnaSequenceFasta(tmpStr, getSequence());  
    }
+   
    /**
     * Convert fastq to fasta format. Static function
     * @param fastq a DnaSequenceFastq object
@@ -287,6 +303,7 @@ public class DnaSequenceFastq extends DnaSequenceFasta{
    public static SequenceFasta convertToFasta(DnaSequenceFastq fastq){
 	 return fastq.convertToFasta();  
    }
+   
    /**
     * Make a complementary reverse sequence from the original DnaSequenceFastq object 
     * @return a complementary reverse sequence in FASTQ format
@@ -308,5 +325,22 @@ public class DnaSequenceFastq extends DnaSequenceFasta{
 	 String tmpStr = getDescription();
 	 tmpStr = "@" + tmpStr.substring(1, tmpStr.length());
 	 return new DnaSequenceFastq(tmpStr, fasta.getSequence(), getQdescription(), new String(array));
+   }
+   
+   /**
+	 * Use barcode to extract sequences
+     * @param barCode barcode sequence
+	 * @return extracted sequences if successful; null otherwise
+	 */
+   public DnaSequenceFastq barcode(String barCode){
+     int len = barCode.length();
+	 String str = getSequence();
+	 int len2 = str.length();
+	 if(str.substring(0, len).equals(barCode)){
+        return new DnaSequenceFastq(getDescription(), str.substring(len, len2), getQdescription(), getQuality().substring(len, len2));      
+	 }
+	 else{
+        return null;
+	 }
    }
 }
