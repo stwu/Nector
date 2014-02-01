@@ -84,6 +84,7 @@ public class SequenceListFastq extends SequenceListFasta{
 		   }
 	       while(scanner.hasNextLine()){
 		     line = scanner.nextLine();
+		     //System.out.println(line);
 			 if((flagSeq == 0) && line.substring(0, 1).equals("@")){
 			 	if(i > 0){
                     fastq = new DnaSequenceFastq(desc, seq.toString(), qDesc, qSeq.toString());
