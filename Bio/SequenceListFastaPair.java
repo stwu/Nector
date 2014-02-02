@@ -109,8 +109,5 @@ public class SequenceListFastaPair{
 		 e.printStackTrace();
       }
    }
-   public static void main(String [] args){
-      SequenceListFastaPair p = new SequenceListFastaPair("read1.fa,read2.fa");
-	  p.assembly("ooo", 3, 10);
-   }
+ 
 }

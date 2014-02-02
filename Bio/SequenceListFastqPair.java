@@ -108,8 +108,5 @@ public class SequenceListFastqPair extends SequenceListFastaPair{
 		 e.printStackTrace();
       }
    }
-   public static void main(String [] args){
-      SequenceListFastqPair p = new SequenceListFastqPair("read1.fq,read2.fq");
-	  p.assembly("ooo2", 3, 10);
-   }
+ 
 }

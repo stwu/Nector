@@ -24,8 +24,6 @@ SOFTWARE.
 */
 
 package Bio;
-import java.io.*;
-import java.util.*;
 
 /**
  * An object of <code>DnaSequenceFastq</code> is a 
@@ -149,7 +147,7 @@ public class DnaSequenceFastq extends DnaSequenceFasta{
 	   str = getSequence();
        char [] qual = quality.toCharArray();
 	   int i = 0, j = 0;
-	   int len = quality.length();
+	
        for(char s: qual){
 		 j++;
          if((s - '@') < cutoff){
@@ -205,7 +203,7 @@ public class DnaSequenceFastq extends DnaSequenceFasta{
 	 */
    public Platform platformCheck(){
       char [] seq = quality.toCharArray();
-	  boolean bNone, bSanger, bIllumina_1_0, bIllumina_1_3;
+	  
 	  char high = '!', low = '~';
 	  
       for(char s : seq){
@@ -270,7 +268,7 @@ public class DnaSequenceFastq extends DnaSequenceFasta{
     * @param fastq a DnaSequenceFastq object
     */
    public void setFastq(DnaSequenceFastq fastq){
-         setFasta(fastq.convertToFasta(fastq));
+         setFasta(DnaSequenceFastq.convertToFasta(fastq));
 		 qDescription = fastq.getQdescription();
 		 quality = fastq.getQuality();
 		 platform = fastq.getPlatform();

@@ -482,14 +482,5 @@ public class SequenceListFasta{
 		 }
 		 return true;
 	 }
-	 public static void main(String [] args){
-		SequenceListFasta list = new SequenceListFasta("example.fasta");
-        list.printSequenceStatistics("example.stat.txt");
-		list.reverseSequence("example.revere.txt");
-		list.complementaryReverseSequence("example.cr.txt");
-		list.sortSequenceByLen("ascending", "example.sort.txt");
-		list.excluding("list", "example.exclude.txt", true);
-		list.filterSequence("example.filter.txt", 100);
-		System.out.println(list.formatCheck());
-	 }
+	
 }

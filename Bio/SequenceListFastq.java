@@ -27,8 +27,7 @@ package Bio;
 import java.io.*;
 import java.util.*;
 import java.util.LinkedList;
-import java.util.Collections;
-import java.util.List;
+
 
 /**
  * An object of <code>SequenceListFastq</code> is a 
@@ -248,8 +247,6 @@ public class SequenceListFastq extends SequenceListFasta{
 			       out.print(fastqDna);
 				 }
 			  }
-			  //out.println("-------");
-			  //System.out.println("0000000000");
 		   }
 		   out.close();
 		 }
@@ -316,17 +313,5 @@ public class SequenceListFastq extends SequenceListFasta{
 		    }   
 		 }
 		 return true;
-	 }
-	 public static void main(String [] args){
-		SequenceListFastq list = new SequenceListFastq("example.fastq");
-        list.printSequenceStatistics("example.stat.txt");
-		list.reverseSequence("example.revere.txt");
-		list.complementaryReverseSequence("example.cr.txt");
-		list.sortSequenceByLen("ascending", "example.sort.txt");
-		list.excluding("list", "example.exclude.txt", true);
-		list.filterSequence("example.filter.txt", 100);
-		list.convertToFasta("example.fasta.txt");
-		list.trim("example.trim.txt", 13, .05F, 50);
-		System.out.println(list.formatCheck());
 	 }
 }

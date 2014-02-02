@@ -48,7 +48,7 @@ public class Nector{
 	 */
     public static void main(String [] args){
 		processArg(args);
-	}
+    }
 	/**
 	 * Providing help information for running the main program
 	 */
@@ -200,8 +200,9 @@ public class Nector{
 
         int formatLen = 250; //Default value of line width for sequence
 
-		if(args[0].equals("stat")){
+		if(args[0].equals("stat")){//statistics
 			runStatistics(inputFileName, outputFileName);
+			System.out.println("Nector finished the \"stat\" job successfully!");
 		}
 		else if(args[0].equals("assembly")){//assembly pair-ended reads into linked ones
 			n = 3;
@@ -233,6 +234,7 @@ public class Nector{
 			  }//end for
 		      SequenceUtils.setFormatLen(formatLen);
               runAssembly(inputFileName, inputFileName2, outputFileName, maxMismatch, minOverlap);
+              System.out.println("Nector finished the \"assembly\" job successfully!");
 			}
 		}
 		else if(args[0].equals("print")){//print FASTA with a specified line length for sequence
@@ -257,10 +259,12 @@ public class Nector{
 			  }//end for
 		      SequenceUtils.setFormatLen(formatLen);
               runPrint(inputFileName, outputFileName);
+              System.out.println("Nector finished the \"print\" job successfully!");
 			}
 		}
 		else if(args[0].equals("check")){//chekc for FASTA or FASTQ format
             runCheck(inputFileName);
+            System.out.println("Nector finished the \"check\" job successfully!");
 		}
 		else if(args[0].equals("rev")){
 			n = 3;
@@ -284,6 +288,7 @@ public class Nector{
 			  }//end for
 		      SequenceUtils.setFormatLen(formatLen);
 			  runReverseOrder(inputFileName, outputFileName);
+			  System.out.println("Nector finished the \"rev\" job successfully!");
 			}
 		}
 		else if(args[0].equals("cr")){
@@ -308,6 +313,8 @@ public class Nector{
 			  }//end for
 		      SequenceUtils.setFormatLen(formatLen);
 			  runComplementaryReverse(inputFileName, outputFileName);
+			  System.out.println("Nector finished the \"cr\" job successfully!");
+
 			}
 		}
 		else if(args[0].equals("trim")){
@@ -344,6 +351,7 @@ public class Nector{
 			  }//end for
 		      SequenceUtils.setFormatLen(formatLen);
 			  runTrim(inputFileName, outputFileName, cutoff, maxPer, minLen);
+			  System.out.println("Nector finished the \"trim\" job successfully!");
 			}
 		}
 		else if(args[0].equals("filter")){
@@ -372,6 +380,7 @@ public class Nector{
 			  }//end for
 		      SequenceUtils.setFormatLen(formatLen);
 			  runFilter(inputFileName, outputFileName, minLen);
+			  System.out.println("Nector finished the \"filter\" job successfully!");
 			}		
 		}
 		else if(args[0].equals("barcode")){
@@ -404,6 +413,7 @@ public class Nector{
 			  }
 		      SequenceUtils.setFormatLen(formatLen);
 			  runBarCode(inputFileName, outputFileName, barCode);
+			  System.out.println("Nector finished the \"barcode\" job successfully!");
 			}
 
 		}
@@ -429,6 +439,7 @@ public class Nector{
 			  }//end for
 		      SequenceUtils.setFormatLen(formatLen);
 			  runExcluding(inputFileName, listFile, outputFileName);
+			  System.out.println("Nector finished the \"exclude\" job successfully!");
 			}
 	    }
 		else if(args[0].equals("select")){
@@ -453,6 +464,7 @@ public class Nector{
 			  }//end for
 		      SequenceUtils.setFormatLen(formatLen);
 		      runSelect(inputFileName, listFile, outputFileName);
+		      System.out.println("Nector finished the \"select\" job successfully!");
 			}
 		}
 		else if(args[0].equals("fastq2fasta")){
@@ -477,6 +489,7 @@ public class Nector{
 			  }//end for
 		      SequenceUtils.setFormatLen(formatLen);
 		      runConversion(inputFileName, outputFileName);
+		      System.out.println("Nector finished the \"fastq2fasta\" job successfully!");
 			}
 		}
 		else if(args[0].equals("sort")){
@@ -505,6 +518,7 @@ public class Nector{
 			  }//end for
 		      SequenceUtils.setFormatLen(formatLen);
               runSortByLength(inputFileName, outputFileName, order);
+              System.out.println("Nector finished the \"sort\" job successfully!");
 			}
 		}
 		else{

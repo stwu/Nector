@@ -24,8 +24,7 @@ SOFTWARE.
 */
 
 package Bio;
-import java.io.*;
-import java.util.*;
+
 
 /**
  * An object of <code>DnaSequenceFasta</code> is a 
@@ -39,10 +38,7 @@ public class DnaSequenceFasta extends SequenceFasta {
 	                                      'H', 'I', 'J', 'K', 'L', 'M', 'N',
 							              'O', 'P', 'Q',      'R', 'S', 'A',
 								          'A', 'V', 'W',      'X', 'Y', 'Z'};
-    private static char[] capital = { 'A', 'B', 'C', 'D', 'E', 'F', 'G',
-    	                              'H', 'I', 'J', 'K', 'L', 'M', 'N',
-                                      'O', 'P', 'Q',      'R', 'S', 'T', 
-                                      'U', 'V', 'W',      'X', 'Y', 'Z'};
+
 
     /**
      * DnaSequenceFasta constructor
@@ -167,9 +163,9 @@ public class DnaSequenceFasta extends SequenceFasta {
 	/**
 	 * Assembly two overlapped pair-ended reads together into current read
      * @param other the 3' end read data
-     * @param maxMismatch the maximum number of mismathes in overlapped region
+     * @param maxMismatch the maximum number of mismatches in overlapped region
      * @param minOverlap the minimum length of overlapped region
-     * @return true if assembly is successful; fale otherwise
+     * @return true if assembly is successful; false otherwise
 	 */
 	 public boolean assembly(DnaSequenceFasta other, int maxMismatch, int minOverlap){
         DnaSequenceFasta cr = other.complementaryReverse();
@@ -182,19 +178,5 @@ public class DnaSequenceFasta extends SequenceFasta {
 		else{
            return false;
 		}
-	 }
-	 public static void main(String [] args){
-		 DnaSequenceFasta f1 = new DnaSequenceFasta(">1", "CCTACGGGAGGCAGCAGTGGGGAA");
-		 DnaSequenceFasta f2 = new DnaSequenceFasta(">1",  "CTACGGGAGGCAGCAGTGGGGAAT");
-	     DnaSequenceFasta f3 = f2.complementaryReverse();
-		 f1.assembly(f3, 3, 10);	
-		 System.out.print(f1);
-        /*String str1 = new String("CCTACGGGAGGCAGCAGTGGGGAA");
-		  String str2 = new String("TACGGGAGGCAGCAGTGGGGAA");
-		String [] str = doAssembly(str1, str2);
-		if(str != null){
-		  System.out.println(str[0]);
-		  System.out.println(str[1]);
-		}*/
-	 }
+	 }	 
 }

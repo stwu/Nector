@@ -24,8 +24,7 @@ SOFTWARE.
 */
 
 package Bio;
-import java.io.*;
-import java.util.*;
+
 
 /**
  * An object of <code>SequenceFasta</code> is a 
