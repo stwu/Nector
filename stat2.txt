@@ -1,8 +1,0 @@
-There are 4 sequences.
-Total length is 91
-Minimum length of sequences is 19.
-Mamimum length of sequences is 28.
-Average length of sequences is 23.
-The length of largest 10 sequences is 91.
-The length of largest 100 sequences is 91.
-N50 is 21.
